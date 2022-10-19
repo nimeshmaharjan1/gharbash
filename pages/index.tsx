@@ -1,14 +1,31 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import React from "react";
 
-const Home: NextPage = () => {
+import Spinner from "@components/shared/Spinner";
+
+import Layout from "@components/Layout";
+import Card from "@components/pages/home/Card";
+import { NextPageWithLayout } from "./_app";
+
+const Home: NextPageWithLayout = () => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  React.useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
   return (
     <>
-      <h1 className="text-9xl font-bold">Hello World</h1>
+      <Spinner isVisible={isLoading}></Spinner>
+      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4 ">
+        <Card></Card>
+      </div>
     </>
   );
+};
+
+Home.getLayout = function getLayout(page: React.ReactElement) {
+  return <Layout>{page}</Layout>;
 };
 
 export default Home;
