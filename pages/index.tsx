@@ -4,21 +4,24 @@ import Spinner from "@components/shared/Spinner";
 
 import Layout from "@components/Layout";
 import Card from "@components/pages/home/Card";
+import { Home } from "@lib/interfaces";
+import { PrismaClient } from "@prisma/client";
 import { NextPageWithLayout } from "./_app";
 
-const Home: NextPageWithLayout = () => {
+const prisma = new PrismaClient();
+
+const Home: NextPageWithLayout<{ homes: Home[] }> = ({ homes }) => {
   const [isLoading, setIsLoading] = React.useState(false);
-  React.useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-  }, []);
   return (
     <>
       <Spinner isVisible={isLoading}></Spinner>
-      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4 ">
-        <Card></Card>
+      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4 justify-items-center">
+        {homes.map((home: Home, index: number) => (
+          <Card {...{ home }} key={home.id}></Card>
+        ))}
+        {homes.map((home: Home, index: number) => (
+          <Card {...{ home }} key={home.id}></Card>
+        ))}
       </div>
     </>
   );
@@ -29,3 +32,12 @@ Home.getLayout = function getLayout(page: React.ReactElement) {
 };
 
 export default Home;
+
+export async function getServerSideProps() {
+  const homes = (await prisma.home.findMany()) as Home[];
+  return {
+    props: {
+      homes: JSON.parse(JSON.stringify(homes)),
+    },
+  };
+}

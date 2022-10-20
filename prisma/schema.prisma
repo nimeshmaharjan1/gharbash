@@ -15,6 +15,9 @@ model Home {
   image       String?
   title       String
   description String
+  country     String
+  state       String
+  address     String
   price       Float
   guests      Int
   beds        Int

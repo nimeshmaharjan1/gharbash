@@ -1,18 +1,24 @@
-const Card = () => {
+import { Home } from "@lib/interfaces";
+import Image from "next/image";
+
+const Card: React.FC<{ home: Home }> = ({ home }) => {
   return (
-    <div className="card  bg-base-100 shadow-lg drop-shadow-xl">
-      <figure>
-        <img src="https://placeimg.com/400/225/arch" alt="Shoes" />
+    <div className="card w-full bg-base-100 shadow-lg drop-shadow-xl">
+      <figure className="w-full h-[17rem] relative">
+        <Image src={home.image} layout="fill" alt="house" priority></Image>
       </figure>
       <div className="card-body">
-        <h2 className="card-title">
-          Shoes!
+        <h2 className="card-title text-lg h-10">
+          {home?.title}
           <div className="badge badge-secondary">NEW</div>
         </h2>
-        <p>If a dog chews shoes whose shoes does he choose?</p>
-        <div className="card-actions justify-end">
-          <div className="badge badge-outline">Fashion</div>
-          <div className="badge badge-outline">Products</div>
+        <div className="address h-8 flex items-center">
+          <p className="opacity-80">
+            {home.address}, {home.state}, {home.country}
+          </p>
+        </div>
+        <div className="card-actions justify-start">
+          <p className="font-bold">${home.price} night</p>
         </div>
       </div>
     </div>
