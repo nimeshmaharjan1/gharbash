@@ -8,8 +8,8 @@
 }
 
 @layer components {
-  .page-heading {
-    @apply text-3xl font-bold;
+  .error-text {
+    @apply text-[11px] md:text-[13px] text-red-500;
   }
   .container {
     position: relative;

@@ -1,15 +1,15 @@
 export interface Home {
-  id: string;
-  image: any;
+  id?: string;
+  image?: any;
   title: string;
   description: string;
   country: string;
   state: string;
   address: string;
-  price: number;
-  guests: number;
-  beds: number;
-  baths: number;
-  createdAt: Date;
-  updatedAt: Date;
+  price: number | null;
+  guests: number | null;
+  beds: number | null;
+  baths: number | null;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
