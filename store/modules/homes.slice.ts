@@ -6,7 +6,7 @@ import axios from "axios";
 export const addHome = createAsyncThunk("homes/create", async (body: Home, thunkAPI) => {
   try {
     const home = await axios.post("/api/homes", body);
-    return home;
+    return JSON.parse(JSON.stringify(home));
   } catch (error) {
     return thunkAPI.rejectWithValue({ error });
   }

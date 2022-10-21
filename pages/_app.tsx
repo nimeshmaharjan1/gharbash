@@ -4,7 +4,7 @@ import "../styles/globals.css";
 
 import { store } from "@store/index";
 import { Provider } from "react-redux";
-
+import "react-toastify/dist/ReactToastify.css";
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };

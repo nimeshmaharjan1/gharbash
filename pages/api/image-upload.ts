@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           throw new Error("Unable to upload image to storage.");
         }
         const url = `${process.env.SUPABASE_URL}/storage/v1/object/public/${data.path}`;
-        return res.status(200).json({ url });
+        return res.status(200).json({ message: "Image uploaded successfully", url });
       } catch (error) {
         res.status(500).json({ error, message: "Something went wrong." });
       }

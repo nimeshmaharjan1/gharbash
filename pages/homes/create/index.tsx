@@ -1,5 +1,6 @@
 import Layout from "@components/Layout";
 import ImageUpload from "@components/shared/ImageUpload";
+import Spinner from "@components/shared/Spinner";
 import { Home } from "@lib/interfaces";
 import { toastInstance } from "@lib/Toast";
 import { NextPageWithLayout } from "@pages/_app";
@@ -10,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "hooks/store";
 import React from "react";
 
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 const CreateHome: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
@@ -32,6 +33,7 @@ const CreateHome: NextPageWithLayout = () => {
     control,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm({ defaultValues: formDefaultValues });
   const [isDisabled, setIsDisabled] = React.useState(false);
@@ -41,7 +43,6 @@ const CreateHome: NextPageWithLayout = () => {
     if (!image) return;
     setIsDisabled(true);
     try {
-      toast.loading("Uploading....");
       const { data } = await axios.post("/api/image-upload", { image });
       setImageUrl(data?.url);
       toastInstance("Image successfully updated.", "success");
@@ -53,13 +54,16 @@ const CreateHome: NextPageWithLayout = () => {
     }
   };
   const onSubmit = (formData: Home) => {
-    toast.loading("Submitting...");
     dispatch(addHome({ ...formData, image: imageUrl }))
-      .then(() => toastInstance("Your home has been successfully added.", "success"))
+      .then(() => {
+        toastInstance("Your home has been successfully added.", "success");
+        reset();
+      })
       .catch((e) => toastInstance("Unable to submit, please try again.", "error"));
   };
   return (
     <>
+      <Spinner isVisible={isHomesLoading}></Spinner>
       <section className="heading">
         <h1 className="font-bold text-2xl">List your home</h1>
         <p className="opacity-60 mt-1">Fill out the form below to list a new home.</p>
@@ -183,6 +187,7 @@ const CreateHome: NextPageWithLayout = () => {
           Submit
         </button>
       )}
+      <ToastContainer />
     </>
   );
 };

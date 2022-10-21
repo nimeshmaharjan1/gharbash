@@ -52,7 +52,7 @@ const ImageUpload: React.FC<Props> = ({ label, onChangePicture, objectFit = "cov
         disabled={updatingImage}
         onClick={handleOnClickPicture}
         className={classNames(
-          "relative aspect-w-16 aspect-h-9 overflow-hidden rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition group focus:outline-none py-4 h-40",
+          "relative aspect-w-16 aspect-h-9 overflow-hidden rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition group focus:outline-none py-4 h-40 md:h-72",
           image?.src
             ? "hover:opacity-50 disabled:hover:opacity-100"
             : "border-2 border-dashed hover:border-gray-400 focus:border-gray-400 disabled:hover:border-gray-200"
