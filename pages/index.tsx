@@ -15,7 +15,7 @@ const Home: NextPageWithLayout<{ homes: Home[] }> = ({ homes }) => {
   return (
     <>
       <Spinner isVisible={isLoading}></Spinner>
-      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4 justify-items-center">
+      <div className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4 justify-items-center">
         {homes.map((home: Home, index: number) => (
           <Card {...{ home }} key={home.id}></Card>
         ))}

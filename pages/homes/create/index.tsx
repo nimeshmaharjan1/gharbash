@@ -92,34 +92,84 @@ const CreateHome: NextPageWithLayout = () => {
       <section className="flex gap-3 flex-wrap md:flex-nowrap mb-2">
         <div className="form-control w-full max-w-[10.4rem] md:max-w-xs">
           <label className="label">Address</label>
-          <input type="text" placeholder="Type here" className="input input-bordered w-full " />
+          <input
+            type="text"
+            placeholder="Type here"
+            {...register("address", { required: "Address is required" })}
+            className={`input input-bordered w-full ${errors?.address ? "input-error" : null}`}
+          />
+          <p className="mt-2 error-text">{errors?.address?.message}</p>
         </div>
         <div className="form-control w-full max-w-[10.4rem] md:max-w-xs">
           <label className="label">State</label>
-          <input type="text" placeholder="Type here" className="input input-bordered w-full " />
+          <input
+            type="text"
+            placeholder="Type here"
+            {...register("state", { required: "State is required" })}
+            className={`input input-bordered w-full ${errors?.state ? "input-error" : null}`}
+          />
+
+          <p className="mt-2 error-text">{errors?.state?.message}</p>
         </div>
         <div className="form-control w-full max-w-sm md:max-w-full">
           <label className="label">Country</label>
-          <input type="text" placeholder="Type here" className="input input-bordered w-full " />
+          <input
+            type="text"
+            placeholder="Type here"
+            {...register("country", { required: "Country is required." })}
+            className={`input input-bordered w-full ${errors?.country ? "input-error" : null}`}
+          />
         </div>
+        <p className=" error-text">{errors?.country?.message}</p>
       </section>
 
       <section className="details form-control w-full max-w-sm md:max-w-full mb-2">
         <label className="label">Price Per Night</label>
-        <input type="text" placeholder="Type here" className="input input-bordered w-full " />
+        <input
+          type="number"
+          placeholder="Type here"
+          {...register("price", {
+            required: "Price is required",
+            minLength: { value: 2, message: "Price cannot be less than 2 characters." },
+            maxLength: { value: 7, message: "Price cannot be more than 7 characters." },
+          })}
+          className={`input input-bordered w-full ${errors?.price ? "input-error" : null}`}
+        />
+        <p className="mt-2 error-text">{errors?.price?.message}</p>
       </section>
       <section className="flex gap-3  mb-2">
         <div className="form-control w-full max-w-xs">
           <label className="label">Guests</label>
-          <input type="number" placeholder="Type here" className="input input-bordered w-full " />
+          <input
+            type="number"
+            placeholder="Type here"
+            {...register("guests", { required: "Number of guests is required." })}
+            className={`input input-bordered w-full ${errors?.price ? "input-error" : null}`}
+          />
+
+          <p className="mt-2 error-text">{errors?.guests?.message}</p>
         </div>
         <div className="form-control w-full max-w-xs">
           <label className="label">Beds</label>
-          <input type="number" placeholder="Type here" className="input input-bordered w-full " />
+          <input
+            type="number"
+            placeholder="Type here"
+            {...register("beds", { required: "Number of beds is required." })}
+            className={`input input-bordered w-full ${errors?.price ? "input-error" : null}`}
+          />
+
+          <p className="mt-2 error-text">{errors?.beds?.message}</p>
         </div>
         <div className="form-control w-full max-w-xs">
           <label className="label">Bathrooms</label>
-          <input type="number" placeholder="Type here" className="input input-bordered w-full " />
+          <input
+            type="number"
+            placeholder="Type here"
+            {...register("baths", { required: "Number of bathrooms is required." })}
+            className={`input input-bordered w-full ${errors?.baths ? "input-error" : null}`}
+          />
+
+          <p className="mt-2 error-text">{errors?.baths?.message}</p>
         </div>
       </section>
       {isHomesLoading ? (

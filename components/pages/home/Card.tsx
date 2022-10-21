@@ -4,11 +4,11 @@ import Image from "next/image";
 const Card: React.FC<{ home: Home }> = ({ home }) => {
   return (
     <div className="card w-full bg-base-100 shadow-lg drop-shadow-xl">
-      <figure className="w-full h-[17rem] relative">
+      <figure className="w-full h-[14rem] relative">
         <Image src={home.image} layout="fill" alt="house" priority></Image>
       </figure>
       <div className="card-body">
-        <h2 className="card-title text-lg h-10">
+        <h2 className="card-title text-lg">
           {home?.title}
           <div className="badge badge-secondary">NEW</div>
         </h2>
