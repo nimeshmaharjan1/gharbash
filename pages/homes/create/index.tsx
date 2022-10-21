@@ -1,12 +1,16 @@
 import Layout from "@components/Layout";
+import ImageUpload from "@components/shared/ImageUpload";
 import { Home } from "@lib/interfaces";
+import { toastInstance } from "@lib/Toast";
 import { NextPageWithLayout } from "@pages/_app";
 import { RootState } from "@store/index";
 import { addHome } from "@store/modules/homes.slice";
+import axios from "axios";
 import { useAppDispatch, useAppSelector } from "hooks/store";
 import React from "react";
 
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const CreateHome: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
@@ -30,9 +34,29 @@ const CreateHome: NextPageWithLayout = () => {
     watch,
     formState: { errors },
   } = useForm({ defaultValues: formDefaultValues });
+  const [isDisabled, setIsDisabled] = React.useState(false);
+  const [imageUrl, setImageUrl] = React.useState("");
+  const uploadImage = async (image: any) => {
+    console.log("hello in uploadImage");
+    if (!image) return;
+    setIsDisabled(true);
+    try {
+      toast.loading("Uploading....");
+      const { data } = await axios.post("/api/image-upload", { image });
+      setImageUrl(data?.url);
+      toastInstance("Image successfully updated.", "success");
+    } catch (error) {
+      toastInstance("Unable to upload image. Please try again.", "error");
+      setImageUrl("");
+    } finally {
+      setIsDisabled(false);
+    }
+  };
   const onSubmit = (formData: Home) => {
-    dispatch(addHome(formData));
-    console.log({ createdHome });
+    toast.loading("Submitting...");
+    dispatch(addHome({ ...formData, image: imageUrl }))
+      .then(() => toastInstance("Your home has been successfully added.", "success"))
+      .catch((e) => toastInstance("Unable to submit, please try again.", "error"));
   };
   return (
     <>
@@ -41,27 +65,7 @@ const CreateHome: NextPageWithLayout = () => {
         <p className="opacity-60 mt-1">Fill out the form below to list a new home.</p>
       </section>
       <section className="image my-3">
-        <label className="inline-block mb-2 ">Image</label>
-        <div className="flex items-center justify-center w-full">
-          <label className="flex flex-col w-full h-32 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300">
-            <div className="flex flex-col items-center justify-center pt-7">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-12 h-12 text-gray-400 group-hover:text-gray-600"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">Upload</p>
-            </div>
-            <input type="file" className="opacity-0" />
-          </label>
-        </div>
+        <ImageUpload label={"Image"} onChangePicture={uploadImage}></ImageUpload>
       </section>
       <section className="title form-control w-full mb-1">
         <label className="label">Title</label>
@@ -90,7 +94,7 @@ const CreateHome: NextPageWithLayout = () => {
         <p className="mt-2 error-text">{errors?.description?.message}</p>
       </section>
       <section className="flex gap-3 flex-wrap md:flex-nowrap mb-2">
-        <div className="form-control w-full max-w-[10.4rem] md:max-w-xs">
+        <div className="form-control w-full max-w-[10.4rem] md:max-w-full">
           <label className="label">Address</label>
           <input
             type="text"
@@ -100,7 +104,7 @@ const CreateHome: NextPageWithLayout = () => {
           />
           <p className="mt-2 error-text">{errors?.address?.message}</p>
         </div>
-        <div className="form-control w-full max-w-[10.4rem] md:max-w-xs">
+        <div className="form-control w-full max-w-[10.4rem] md:max-w-full">
           <label className="label">State</label>
           <input
             type="text"
@@ -137,8 +141,8 @@ const CreateHome: NextPageWithLayout = () => {
         />
         <p className="mt-2 error-text">{errors?.price?.message}</p>
       </section>
-      <section className="flex gap-3  mb-2">
-        <div className="form-control w-full max-w-xs">
+      <section className="flex gap-3 flex-wrap md:flex-nowrap mb-2">
+        <div className="form-control w-full max-w-sm md:max-w-full">
           <label className="label">Guests</label>
           <input
             type="number"
@@ -149,7 +153,7 @@ const CreateHome: NextPageWithLayout = () => {
 
           <p className="mt-2 error-text">{errors?.guests?.message}</p>
         </div>
-        <div className="form-control w-full max-w-xs">
+        <div className="form-control w-full max-w-sm md:max-w-full">
           <label className="label">Beds</label>
           <input
             type="number"
@@ -160,7 +164,7 @@ const CreateHome: NextPageWithLayout = () => {
 
           <p className="mt-2 error-text">{errors?.beds?.message}</p>
         </div>
-        <div className="form-control w-full max-w-xs">
+        <div className="form-control w-full max-w-sm md:max-w-full">
           <label className="label">Bathrooms</label>
           <input
             type="number"
