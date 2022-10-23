@@ -8,12 +8,14 @@ import { RootState } from "@store/index";
 import { addHome } from "@store/modules/homes.slice";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "hooks/store";
+import { useRouter } from "next/router";
 import React from "react";
 
 import { useForm } from "react-hook-form";
 import { ToastContainer } from "react-toastify";
 
 const CreateHome: NextPageWithLayout = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { isHomesLoading, createdHome, homesError } = useAppSelector((state: RootState) => state.homesStore);
   const formDefaultValues: Home = {
@@ -61,12 +63,19 @@ const CreateHome: NextPageWithLayout = () => {
       })
       .catch((e) => toastInstance("Unable to submit, please try again.", "error"));
   };
+
   return (
     <>
       <Spinner isVisible={isHomesLoading}></Spinner>
-      <section className="heading">
-        <h1 className="font-bold text-2xl">List your home</h1>
-        <p className="opacity-60 mt-1">Fill out the form below to list a new home.</p>
+      <section className="heading flex items-center justify-between">
+        <div>
+          <h1 className="font-bold text-2xl">List your home</h1>
+          <p className="opacity-60 mt-1">Fill out the form below to list a new home.</p>
+        </div>
+
+        <button className="btn btn-ghost text-error btn-sm" onClick={() => router.push("/")}>
+          back
+        </button>
       </section>
       <section className="image my-3">
         <ImageUpload label={"Image"} onChangePicture={uploadImage}></ImageUpload>
@@ -181,7 +190,7 @@ const CreateHome: NextPageWithLayout = () => {
         </div>
       </section>
       {isHomesLoading ? (
-        <button className="btn btn-primary mt-6 w-full loading" onClick={handleSubmit(onSubmit)}></button>
+        <button className="btn btn-primary mt-6 w-full loading"></button>
       ) : (
         <button className="btn btn-primary mt-6 w-full" onClick={handleSubmit(onSubmit)}>
           Submit

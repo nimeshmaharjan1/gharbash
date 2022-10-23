@@ -5,6 +5,14 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 const supabase = createClient(process.env.SUPABASE_URL as string, process.env.SUPABASE_KEY as string);
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb",
+    },
+  },
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
   switch (method) {
@@ -31,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (uploadError) {
           throw new Error("Unable to upload image to storage.");
         }
-        const url = `${process.env.SUPABASE_URL}/storage/v1/object/public/${data.path}`;
+        const url = `${process.env.SUPABASE_URL}/storage/v1/object/public/homes/${data.path}`;
         return res.status(200).json({ message: "Image uploaded successfully", url });
       } catch (error) {
         res.status(500).json({ error, message: "Something went wrong." });

@@ -19,9 +19,6 @@ const Home: NextPageWithLayout<{ homes: Home[] }> = ({ homes }) => {
         {homes.map((home: Home, index: number) => (
           <Card {...{ home }} key={home.id}></Card>
         ))}
-        {homes.map((home: Home, index: number) => (
-          <Card {...{ home }} key={home.id}></Card>
-        ))}
       </div>
     </>
   );

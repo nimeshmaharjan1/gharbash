@@ -7,7 +7,7 @@ const Card: React.FC<{ home: Home }> = ({ home }) => {
       <figure className="w-full h-[14rem] relative">
         <Image src={home.image} layout="fill" alt="house" priority></Image>
       </figure>
-      <div className="card-body">
+      <div className="card-body gap-3">
         <h2 className="card-title text-lg">
           {home?.title}
           <div className="badge badge-secondary">NEW</div>
