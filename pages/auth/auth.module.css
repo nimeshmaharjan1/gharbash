@@ -1,0 +1,22 @@
+.providerLine {
+  overflow: hidden;
+  text-align: center;
+}
+.providerLine:before,
+.providerLine:after {
+  background-color: #000;
+  content: "";
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+.providerLine:before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+.providerLine:after {
+  left: 0.5em;
+  margin-right: -50%;
+}

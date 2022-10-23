@@ -8,6 +8,8 @@ import { RootState } from "@store/index";
 import { addHome } from "@store/modules/homes.slice";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "hooks/store";
+import { CtxOrReq } from "next-auth/client/_utils";
+import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -204,4 +206,20 @@ const CreateHome: NextPageWithLayout = () => {
 export default CreateHome;
 CreateHome.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>;
+};
+
+export const getServerSideProps = async (context: CtxOrReq) => {
+  const session = await getSession(context);
+  if (session === null) {
+    return {
+      redirect: {
+        destination: "/auth/register",
+      },
+    };
+  }
+  return {
+    props: {
+      session: JSON.parse(JSON.stringify(session)),
+    },
+  };
 };
