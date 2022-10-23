@@ -2,7 +2,7 @@ import Spinner from "@components/shared/Spinner";
 import { toastInstance } from "@lib/Toast";
 import { NextPage } from "next";
 import { CtxOrReq } from "next-auth/client/_utils";
-import { getSession, signIn } from "next-auth/react";
+import { getSession, signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
@@ -12,6 +12,8 @@ import { GoHome, GoMail } from "react-icons/go";
 import styles from "./auth.module.css";
 
 const SignUp: NextPage<{ session: any }> = ({ session }) => {
+  const { data: client } = useSession();
+  console.log(client);
   const [isLoading, setIsLoading] = React.useState(false);
   const [showConfirm, setShowConfirm] = React.useState(false);
   const [submittedEmail, setSubmittedEmail] = React.useState("");
@@ -47,7 +49,15 @@ const SignUp: NextPage<{ session: any }> = ({ session }) => {
   };
   const signInWithGithub = async () => {
     setIsLoading(true);
-    await signIn("github", {
+    const response = (await signIn("github", {
+      callbackUrl: "http://localhost:3000",
+      redirect: false,
+    })) as any;
+    console.log("github erroR: ", response);
+  };
+  const signInWithGoogle = async () => {
+    setIsLoading(true);
+    await signIn("google", {
       callbackUrl: "http://localhost:3000",
       redirect: false,
     });
@@ -96,14 +106,17 @@ const SignUp: NextPage<{ session: any }> = ({ session }) => {
               </section>
               <p className={`text-center text-sm opacity-60 mt-2 ${styles.providerLine}`}>Or sign up with</p>
               <section className="providers flex flex-col gap-1">
-                <button className="h-[42px] w-full mx-auto border rounded-md p-2 flex justify-center items-center space-x-2 text-gray-500 hover:text-gray-600 hover:border-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-gray-500 disabled:hover:bg-transparent disabled:hover:border-gray-200 transition-colors mt-2 gap-2 font-bold">
+                <button
+                  onClick={() => signInWithGoogle()}
+                  className="h-[42px] w-full mx-auto border rounded-md p-2 flex justify-center items-center space-x-2 text-gray-500 hover:text-gray-600 hover:border-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-gray-500 disabled:hover:bg-transparent disabled:hover:border-gray-200 transition-colors mt-2 gap-2 font-bold"
+                >
                   <Image src="/icons/google.png" alt="Google" width={16} height={16} />
                   Google
                 </button>
 
                 <button
                   className="h-[42px] w-full mx-auto border rounded-md p-2 flex justify-center items-center space-x-2 text-gray-500 hover:text-gray-600 hover:border-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-gray-500 disabled:hover:bg-transparent disabled:hover:border-gray-200 transition-colors mt-2 gap-2 font-bold"
-                  onClick={signInWithGithub}
+                  onClick={() => signInWithGithub()}
                 >
                   <Image src="/icons/github.png" alt="Github" width={16} height={16} />
                   Github

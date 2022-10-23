@@ -69,10 +69,12 @@ export default NextAuth({
       sendVerificationRequest,
     }),
     GoogleProvider({
+      id: "google",
       clientId: process.env.GOOGLE_ID as string,
       clientSecret: process.env.GOOGLE_SECRET as string,
     }),
     GithubProvider({
+      id: "github",
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
